@@ -1,19 +1,27 @@
+"""Contains MiniMax class for choosing moves based upon Minimax algorithm"""
+
 import random
 
 
 class MiniMax(object):
+    """Class for performing ranking of available moves using Minimax algorithm."""
     
     def __init__(self, win_matrix):
         self.players = (1,2)
         self.calc_depth = 9
         self.win_matrix = win_matrix
+        self.choice = None
 
     def minimax_scores(self, board_matrix, player_turn=2, depth=0):
+        """Calculates scores recursively.
+
+        Returns highest scoring move on computer's turn, or lowest on user's turn
+        """
         # Check for winner and get list of possible next moves
         winner = self.find_winner(board_matrix)
         moves = self.get_avail_moves(board_matrix)
 
-        # If the game is over return the score
+        # For base case where there is a winner return the score
         if winner != None or moves == []:
             return self.score(winner, depth)
 
@@ -33,7 +41,7 @@ class MiniMax(object):
             game_state[move] = player_turn
             scores.append(self.minimax_scores(game_state, player_turn=nxt_player, depth=depth+1))
 
-        # Get min or max score
+        # Get min or max score and if computer's turn select choice for next move
         if player_turn == 1:
             score = self.get_min_score(scores)
         elif player_turn == 2:
@@ -43,6 +51,7 @@ class MiniMax(object):
         return score
 
     def get_avail_moves(self, board_matrix):
+        """Generates list of available moves for given board matrix."""
         moves = []
         for idx, sqr in enumerate(board_matrix):
             if sqr == 0:
@@ -50,6 +59,7 @@ class MiniMax(object):
         return moves
 
     def find_winner(self, board_matrix):
+        """Takes board matrix and retuns which player has won"""
         for p in self.players:
             for line in self.win_matrix:
                 num_in_line = 0
@@ -61,6 +71,7 @@ class MiniMax(object):
         return None
 
     def score(self, winner, depth):
+        """Returns Minimax score"""
         if winner == 1:
             return -10 + depth
         elif winner == 2:
@@ -69,6 +80,7 @@ class MiniMax(object):
             return 0
 
     def get_min_score(self, scores):
+        """Takes list of scores and returns lowest score"""
         lowest_score = scores[0]
         for score in scores:
             if score < lowest_score:
@@ -76,6 +88,7 @@ class MiniMax(object):
         return lowest_score
 
     def get_max_score(self, scores):
+        """Takes list of scores and returns highest score"""
         highest_score = scores[0]
         for score in scores:
             if score > highest_score:
@@ -83,4 +96,5 @@ class MiniMax(object):
         return highest_score
 
     def set_depth(self, depth):
+        """Sets calculation depth of algorithm to provided value"""
         self.calc_depth = depth

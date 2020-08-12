@@ -1,3 +1,8 @@
+"""Contains NoughtsAndCrossesApp Tkinter application class and classes for TKinter frames.
+
+NoughtsAndCrossesApp Tkinter class controls gui for game and controls displayed frames.
+"""
+
 from tkinter import *
 import tkinter.messagebox as tk_msgbox
 import tkinter.font as tkfont
@@ -6,6 +11,7 @@ from lib.game import Game
 
 
 class NoughtsAndCrossesApp(Tk):
+    """Tkinter application class for controlling Noughts and Crosses game interface"""
     
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
@@ -40,6 +46,7 @@ class NoughtsAndCrossesApp(Tk):
             self.frames['GameScreen'].new_game()
 
     def game_over(self, winner):
+        """Shows message congratulating or commiserating user then ask if they wish to play again."""
         if winner == 1:
             tk_msgbox.showinfo("Congratulations!", "Well done. You won!")
         elif winner == 2:
@@ -57,6 +64,11 @@ class NoughtsAndCrossesApp(Tk):
 
 
 class MenuScreen(Frame):
+    """Tkiner frame for menu screen.
+
+    Frame which is presented to the user when starting the application. This frame contains options
+    for selecting difficulty mode and which player has the first turn.
+    """
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -105,6 +117,12 @@ class MenuScreen(Frame):
 
 
 class GameScreen(Frame):
+    """Tkinter frame for the game screen.
+    
+    This screen shows the game borad with clickable tiles for the user to place their Os or Xs.
+    Toggle buttons are displayed above the game grid when impossible difficulty mode is selected
+    which change the calculation depth of the Minimax algorithm.
+    """
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -118,6 +136,7 @@ class GameScreen(Frame):
         self.depth = 9
 
     def new_game(self):
+        """Sets up a new blank game board with clickable tiles"""
         self.starting_player = self.controller.starting_player
         self.game = Game(self.controller.mode)
         
